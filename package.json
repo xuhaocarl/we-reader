@@ -1,0 +1,19 @@
+{
+  "name": "we-reader",
+  "version": "1.0.0",
+  "description": "WeChat article to Markdown converter",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && node server.js"
+  },
+  "keywords": [
+    "wechat",
+    "markdown",
+    "converter",
+    "we-reader"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

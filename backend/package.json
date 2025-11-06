@@ -1,0 +1,19 @@
+{
+  "name": "wechat-to-markdown-backend",
+  "version": "1.0.0",
+  "description": "Backend server for converting WeChat articles to Markdown.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "turndown": "^7.1.3"
+  }
+}
+
+
