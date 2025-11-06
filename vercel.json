@@ -1,20 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/convert.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/convert",
-      "dest": "/api/convert.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
-    }
-  ]
+  "version": 2
 }
 

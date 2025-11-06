@@ -2,6 +2,29 @@
 
 本应用可以部署到多个云平台，让用户通过网址在云端使用。
 
+## ⚠️ 重要提示：解决 404 错误
+
+如果部署后出现 **404 错误**，请先执行以下步骤：
+
+1. **创建 `public/` 目录并复制前端文件**
+   ```bash
+   mkdir -p public
+   cp frontend/index.html public/index.html
+   ```
+
+2. **推送代码到 GitHub**
+   ```bash
+   git add public/index.html
+   git commit -m "Add public/index.html for Vercel"
+   git push
+   ```
+
+3. **在 Vercel 项目设置中，确保 Output Directory 留空**
+
+4. **等待 Vercel 自动重新部署**
+
+详细说明请查看下面的"常见问题排查"部分。
+
 ## 部署方案
 
 ### 方案一：Vercel 部署（推荐）⭐
@@ -33,6 +56,12 @@ cd /Users/songxuhao/Desktop/SONG-开发/we-reader
 # 初始化 Git 仓库
 git init
 
+# 创建 public 目录（如果不存在）
+mkdir -p public
+
+# 复制前端文件到 public 目录（Vercel 标准做法）
+cp frontend/index.html public/index.html
+
 # 添加所有文件到 Git
 git add .
 
@@ -53,13 +82,27 @@ git push -u origin main
 - 权限选择：至少勾选 `repo` 权限
 - 将生成的 token 作为密码使用
 
-**1.3 验证代码已上传**
+**1.3 准备前端文件（重要！）**
+
+在推送代码之前，需要将前端文件复制到 `public/` 目录（Vercel 的标准做法）：
+
+```bash
+# 在项目根目录执行
+mkdir -p public
+cp frontend/index.html public/index.html
+```
+
+或者手动创建 `public/` 目录，并将 `frontend/index.html` 复制到 `public/index.html`
+
+**1.4 验证代码已上传**
 
 1. 访问你的 GitHub 仓库页面：`https://github.com/YOUR_USERNAME/we-reader`
 2. 确认可以看到以下文件和目录：
-   - `frontend/index.html`
+   - `public/index.html`（重要！必须存在）
+   - `frontend/index.html`（保留作为备份）
    - `backend/server.js`
    - `api/convert.js`
+   - `api/package.json`
    - `vercel.json`
    - `README.md`
    - 等等
@@ -95,8 +138,14 @@ git push -u origin main
 
 4. **Build and Output Settings**（构建和输出设置）
    - **Build Command**（构建命令）：留空
-   - **Output Directory**（输出目录）：`frontend`
+   - **Output Directory**（输出目录）：**留空**（重要！不要设置为 `frontend`）
    - **Install Command**（安装命令）：留空（Vercel 会自动检测）
+
+**重要提示：**
+- Output Directory 必须**留空**，不要设置为 `frontend`
+- Vercel 会自动识别 `api/` 目录下的 serverless functions
+- 前端文件需要放在 `public/` 目录（推荐）或项目根目录
+- 如果使用 `frontend/` 目录，需要将文件复制到 `public/` 目录
 
 5. **Environment Variables**（环境变量）
    - 暂时不需要设置，可以留空
