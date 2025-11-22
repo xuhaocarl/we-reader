@@ -1,8 +1,8 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
-import TurndownService from 'turndown';
-import { Readability } from '@mozilla/readability';
-import { JSDOM } from 'jsdom';
+const axios = require('axios');
+const cheerio = require('cheerio');
+const TurndownService = require('turndown');
+const { Readability } = require('@mozilla/readability');
+const { JSDOM } = require('jsdom');
 
 // Initialize Turndown Service
 const turndownService = new TurndownService({
@@ -53,7 +53,7 @@ async function convertGenericArticle(html, url) {
   return { markdown: `# ${article.title}\n\n${markdown}`, title: article.title, url };
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -115,4 +115,4 @@ export default async function handler(req, res) {
 
     res.status(500).json({ error: errorMessage });
   }
-}
+};
