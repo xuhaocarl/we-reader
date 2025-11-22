@@ -1,11 +1,10 @@
 {
   "name": "we-reader",
   "version": "1.0.0",
-  "description": "WeChat article to Markdown converter",
-  "main": "backend/server.js",
+  "description": "Universal Article to Markdown converter",
+  "main": "api/index.js",
   "scripts": {
-    "start": "cd backend && node server.js",
-    "dev": "cd backend && node server.js"
+    "start": "node api/index.js"
   },
   "keywords": [
     "wechat",
@@ -14,6 +13,14 @@
     "we-reader"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsdom": "^27.2.0",
+    "turndown": "^7.2.2"
+  }
 }
-

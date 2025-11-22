@@ -33,7 +33,7 @@
             We-Reader
         </h1>
         <p class="text-center text-gray-600 text-sm mb-8">
-            文章变成markdown，想咋修改都得当
+            任何网页变成 Markdown，想咋修改都得当
         </p>
 
         <!-- 输入区域 -->
@@ -42,7 +42,7 @@
                 <input
                     type="text"
                     id="urlInput"
-                    placeholder="粘贴公众号URL 即可输出 markdown格式文件"
+                    placeholder="粘贴文章链接 (微信公众号、三联生活周刊等)"
                     class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
@@ -57,18 +57,13 @@
 
         <!-- 底部小字 -->
         <div class="text-center text-gray-500 text-xs space-y-2 mb-6">
-            <p>还在"收藏"当"看过"？别让好文章最后变成"404"！</p>
+            <p>支持微信公众号及任意网页链接。</p>
             <p>一键卸妆，只留干货。你的知识库，就该这么清爽！</p>
         </div>
 
         <!-- 提示信息 -->
         <div id="messageBox" class="text-center p-3 rounded-lg mb-4 hidden"></div>
         
-        <!-- 后端连接状态 -->
-        <div id="backendStatus" class="text-center text-xs text-gray-500 mb-2 hidden">
-            <span id="statusText">检查后端连接...</span>
-        </div>
-
         <!-- 单个结果区域 -->
         <div class="mt-6" id="resultArea" style="display: none;">
             <div class="flex justify-between items-center mb-2">
@@ -105,47 +100,6 @@
         const downloadButton = document.getElementById('downloadButton');
 
         let articleTitle = 'article';
-
-        const backendStatus = document.getElementById('backendStatus');
-        const statusText = document.getElementById('statusText');
-
-        // 根据环境自动选择后端地址
-        const API_BASE_URL = (() => {
-            // 如果是本地开发环境
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                return 'http://localhost:3001';
-            }
-            // 生产环境：使用相对路径（前后端部署在同一域名下）
-            // 如果前后端部署在不同域名，可以在这里设置后端地址
-            // 例如：return 'https://your-backend.railway.app';
-            return window.location.origin; // 默认使用当前域名（适用于 Vercel 等一体化部署）
-        })();
-
-        // 检查后端连接状态
-        async function checkBackendStatus() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/convert`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: 'test' }),
-                });
-                // 即使返回错误，也说明后端服务器在运行
-                backendStatus.classList.remove('hidden');
-                statusText.textContent = '✅ 后端服务器已连接';
-                statusText.className = 'text-green-600';
-            } catch (error) {
-                backendStatus.classList.remove('hidden');
-                statusText.textContent = '⚠️ 后端服务器未连接，请先启动后端服务器';
-                statusText.className = 'text-red-600';
-            }
-        }
-
-        // 页面加载时检查后端状态
-        window.addEventListener('load', () => {
-            checkBackendStatus();
-            // 每30秒检查一次
-            setInterval(checkBackendStatus, 30000);
-        });
 
         // 设置按钮为加载状态
         function setLoading(isLoading) {
@@ -192,14 +146,9 @@
             if (!processedUrl.startsWith('http://') && !processedUrl.startsWith('https://')) {
                 processedUrl = 'https://' + processedUrl;
             }
-            if (!processedUrl.includes('mp.weixin.qq.com')) {
-                showMessage('请输入有效的微信文章 URL (mp.weixin.qq.com)');
-                setLoading(false);
-                return;
-            }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/convert`, {
+                const response = await fetch('/api', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -222,11 +171,7 @@
 
             } catch (error) {
                 console.error('Fetch 错误:', error);
-                if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
-                    showMessage('无法连接到后端服务器，请确保后端服务器正在运行（http://localhost:3001）');
-                } else {
-                    showMessage(error.message);
-                }
+                showMessage(error.message);
             } finally {
                 setLoading(false);
             }
