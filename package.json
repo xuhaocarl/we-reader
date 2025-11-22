@@ -1,6 +1,7 @@
 {
   "name": "we-reader",
   "version": "1.0.0",
+  "type": "module",
   "description": "Universal Article to Markdown converter",
   "main": "api/index.js",
   "scripts": {
